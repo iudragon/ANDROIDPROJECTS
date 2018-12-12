@@ -16,6 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <!-- two toolbar snippets to toggle between search version and standard version -->
+            <include layout="@layout/snippet_searchtoolbar" />
             <include layout="@layout/snippet_viewcontactstoolbar" />
 
         </RelativeLayout>

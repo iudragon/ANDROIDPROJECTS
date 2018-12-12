@@ -9,7 +9,7 @@
     <!-- Use IDs to reference them along JAVA code.
  -->
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/viewContactToolbar"
+        android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:background="@drawable/grey_borderbottom"
         android:layout_height="50dp">
