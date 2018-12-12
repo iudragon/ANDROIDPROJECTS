@@ -1,0 +1,53 @@
+<!-- Toolbars are created using snippets. Later the snippets are included in the layout file.
+ -->
+
+<!-- This snippet is named snippet_searchtoolbar because it will be used to search for the contacts -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This is going to hold our bar -->
+    <!-- Use IDs to reference them along JAVA code.
+ -->
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/viewContactToolbar"
+        android:layout_width="match_parent"
+        android:background="@drawable/grey_borderbottom"
+        android:layout_height="50dp">
+
+        <!-- The reason we can do match parent in toolbar is because it is contained in AppBarLayout and AppBarLayout is only 50dp -->
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/ic_arrow_back"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="15dp"
+                    android:id="@+id/ivBackArrow"/>
+
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:background="@null"
+                    android:id="@+id/etSearchContacts"
+                    android:hint="Find Contacts"
+                    android:layout_height="wrap_content"
+                    android:text="Contacts"
+                    android:layout_toEndOf="@+id/ivBackArrow"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+</merge>
