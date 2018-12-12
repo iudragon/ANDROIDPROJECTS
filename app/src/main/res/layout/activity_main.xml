@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Coordinator layout is used for creating toolbar. It allows different widgets on the screen to coordinate with each other. -->
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <!-- FrameLayout is the container to contain the Fragments and then we will keep swapping them out (Fragments) -->
+
+    <!-- match_parent because we want to take the entire Layout -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_container"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
