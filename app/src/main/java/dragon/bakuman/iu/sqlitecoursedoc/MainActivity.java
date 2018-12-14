@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -16,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: started.");
+
+        initImageLoader();
 
         init();
     }
@@ -51,4 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    //ImageLoader has to be initialised atleast once and as our MainActivity hosts all our fragments. We do it here
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(MainActivity.this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+    }
+
+
 }

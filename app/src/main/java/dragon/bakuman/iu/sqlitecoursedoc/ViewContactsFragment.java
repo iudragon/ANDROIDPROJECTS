@@ -13,21 +13,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.CustomListAdapter;
 
 //Holds the code for the fragment
 //this will display all the contacts in the contacts database
 public class ViewContactsFragment extends Fragment {
     private static final String TAG = "ViewContactsFragment";
+    private String testImageUrl = "0.soompi.io/wp-content/uploads/2016/12/07204033/g-dragon1.jpg";
 
     //creating global variable
     //These below are the two states we are gonna bounce in between
-    private static final int STANDARD_APPBAR  = 0;
+    private static final int STANDARD_APPBAR = 0;
     private static final int SEARCH_APPBAR = 1;
 
     private int mAppBarState;
     //create widgets. Defined in respective snippets.
     private AppBarLayout viewContactsBar, searchBar;
 
+    private CustomListAdapter adapter; //Global one.
+    private ListView contactsList; //Create ListView alsp
 
 
     //same as onCreate method but for Fragment
@@ -41,9 +50,11 @@ public class ViewContactsFragment extends Fragment {
         //Declaring widgets
         viewContactsBar = view.findViewById(R.id.viewContactToolbar);
         searchBar = view.findViewById(R.id.searchToolbar);
+        contactsList = view.findViewById(R.id.contactsList);
         Log.d(TAG, "onCreateView: started.");
 
         setAppBarState(STANDARD_APPBAR);
+        setUpContactsList();
 
         //navigate to add contacts fragment
         FloatingActionButton fab = view.findViewById(R.id.fabAddContact);
@@ -85,13 +96,43 @@ public class ViewContactsFragment extends Fragment {
 
     }
 
+
+    private void setUpContactsList() {
+        //hoping for automatic final: RESPONSE -->
+        ArrayList<Contact> contacts = new ArrayList<>();
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
+        // If in a Fragment to get a context, we do getActivity()
+        adapter = new CustomListAdapter(getActivity(), R.layout.layout_contactlistitems, contacts, "https://");
+        contactsList.setAdapter(adapter);
+
+    }
+
+
     //this is going to activate the toggle between two states. Search version and standard version.
     //initiates the app bar state toggle
     private void toggleToolbarState() {
 
         Log.d(TAG, "toggleToolbarState: toggling app bar state");
 
-        if (mAppBarState == STANDARD_APPBAR){
+        if (mAppBarState == STANDARD_APPBAR) {
             //if the above is true, then it will set to SEARCH_APPBAR
             setAppBarState(SEARCH_APPBAR);
         } else {
@@ -102,8 +143,8 @@ public class ViewContactsFragment extends Fragment {
     }
 
     /**
-     *
      * sets the AppBarState for either the search mode or the standard mode
+     *
      * @param state
      */
 
@@ -112,7 +153,7 @@ public class ViewContactsFragment extends Fragment {
         mAppBarState = state;
 
         //this were the logic for hiding the toolbar will be
-        if (mAppBarState == STANDARD_APPBAR){
+        if (mAppBarState == STANDARD_APPBAR) {
             searchBar.setVisibility(View.GONE);
             viewContactsBar.setVisibility(View.VISIBLE);
             //Declare view
@@ -125,14 +166,13 @@ public class ViewContactsFragment extends Fragment {
 
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
 
                 Log.d(TAG, "setAppBarState: Nullpointerexception " + e.getMessage());
 
             }
 
-        }
-        else if (mAppBarState == SEARCH_APPBAR){
+        } else if (mAppBarState == SEARCH_APPBAR) {
             viewContactsBar.setVisibility(View.GONE);
             searchBar.setVisibility(View.VISIBLE);
 
