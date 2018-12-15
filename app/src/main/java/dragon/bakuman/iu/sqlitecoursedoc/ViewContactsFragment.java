@@ -7,11 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -122,6 +124,27 @@ public class ViewContactsFragment extends Fragment {
         // If in a Fragment to get a context, we do getActivity()
         adapter = new CustomListAdapter(getActivity(), R.layout.layout_contactlistitems, contacts, "https://");
         contactsList.setAdapter(adapter);
+
+        contactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d(TAG, "onClick: navigating to: " + getString(R.string.contact_fragment));
+                ContactFragment fragment = new ContactFragment();
+                //we create FragmentTransaction object (transaction)
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                //we wanna replace whatever is in the 'fragment_container' currently and then we wanna pass the new 'fragment'
+                //Add the transaction to the backstack so the user can navigate back
+                transaction.replace(R.id.fragment_container, fragment);
+                //in addToBackStack parameter we pass the TAG to identify the fragment. But we are not worried in This case. So we just pass null
+                //backstack works like the back button basically. Everytime you replace a fragment, you add the previous one to the backstack; that way when you press back it will navigate in the correct order.
+
+                //inside addToBackStack is the identifier
+                transaction.addToBackStack(getString(R.string.contact_fragment));
+                transaction.commit();
+
+            }
+        });
 
     }
 
