@@ -16,11 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
+
 
 public class ContactFragment extends Fragment {
 
     private static final String TAG = "ContactFragment";
+
+    //this will evade the nullpointerexception when adding to a new bundle from MainActivity
+    public ContactFragment(){
+        super();
+        setArguments(new Bundle());
+    }
+
+
     private Toolbar toolbar;
+    private Contact mContact;
 
     @Nullable
     @Override
@@ -28,6 +39,14 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         toolbar = view.findViewById(R.id.contactToolbar);
         Log.d(TAG, "onCreateView: started.");
+
+        //as soon as it start, this will retrieve the contact
+        mContact = getContactFromBundle();
+
+        if (mContact != null){
+
+            Log.d(TAG, "onCreateView: received contact: " + mContact.getName());
+        }
 
         //required up setting up the toolbar
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -53,18 +72,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: click edit inon ");
-                EditContactFragment fragment = new EditContactFragment();
-                //we create FragmentTransaction object (transaction)
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                //we wanna replace whatever is in the 'fragment_container' currently and then we wanna pass the new 'fragment'
-                //Add the transaction to the backstack so the user can navigate back
-                transaction.replace(R.id.fragment_container, fragment);
-                //in addToBackStack parameter we pass the TAG to identify the fragment. But we are not worried in This case. So we just pass null
-                //backstack works like the back button basically. Everytime you replace a fragment, you add the previous one to the backstack; that way when you press back it will navigate in the correct order.
 
-                //inside addToBackStack is the identifier
-                transaction.addToBackStack(getString(R.string.edit_contact_fragment));
-                transaction.commit();
             }
         });
 
@@ -87,6 +95,23 @@ public class ContactFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    //to retrieve the information
+    private Contact getContactFromBundle(){
+
+        Log.d(TAG, "getContactFromBundle: arguments: " + getArguments());
+        Bundle bundle = this.getArguments();
+        //this will receive the incoming bundle when we navigate to the contactfragment
+        if (bundle != null){
+            return bundle.getParcelable(getString(R.string.contact));
+
+        } else {
+
+            return null;
+        }
     }
 }
 

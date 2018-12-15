@@ -28,6 +28,19 @@ public class ViewContactsFragment extends Fragment {
     private static final String TAG = "ViewContactsFragment";
     private String testImageUrl = "0.soompi.io/wp-content/uploads/2016/12/07204033/g-dragon1.jpg";
 
+    //interface
+    public interface OnContactSelectedListener{
+        void OnContactSelected(Contact con);
+
+    }
+
+    OnContactSelectedListener mOnContactListener;
+
+
+
+
+
+
     //creating global variable
     //These below are the two states we are gonna bounce in between
     private static final int STANDARD_APPBAR = 0;
@@ -98,10 +111,22 @@ public class ViewContactsFragment extends Fragment {
 
     }
 
+    //MUST when implementing interface
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mOnContactListener = (OnContactSelectedListener) getActivity();
+
+        }catch (ClassCastException e){
+            Log.d(TAG, "onAttach: ClassCastException: " + e.getMessage());
+
+        }
+    }
 
     private void setUpContactsList() {
         //hoping for automatic final: RESPONSE -->
-        ArrayList<Contact> contacts = new ArrayList<>();
+        final ArrayList<Contact> contacts = new ArrayList<>();
         contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
         contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
         contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
@@ -130,18 +155,10 @@ public class ViewContactsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d(TAG, "onClick: navigating to: " + getString(R.string.contact_fragment));
-                ContactFragment fragment = new ContactFragment();
-                //we create FragmentTransaction object (transaction)
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                //we wanna replace whatever is in the 'fragment_container' currently and then we wanna pass the new 'fragment'
-                //Add the transaction to the backstack so the user can navigate back
-                transaction.replace(R.id.fragment_container, fragment);
-                //in addToBackStack parameter we pass the TAG to identify the fragment. But we are not worried in This case. So we just pass null
-                //backstack works like the back button basically. Everytime you replace a fragment, you add the previous one to the backstack; that way when you press back it will navigate in the correct order.
 
-                //inside addToBackStack is the identifier
-                transaction.addToBackStack(getString(R.string.contact_fragment));
-                transaction.commit();
+                //pass the contact to the interface and send it to MainActivity
+                mOnContactListener.OnContactSelected(contacts.get(position));
+
 
             }
         });

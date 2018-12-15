@@ -8,11 +8,32 @@ import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewContactsFragment.OnContactSelectedListener {
 
     private static final String TAG = "MainActivity";
+
+
+    @Override
+    public void OnContactSelected(Contact contact) {
+        Log.d(TAG, "OnContactSelected: contact selected from: " + getString(R.string.view_contact_fragment) + " " + contact.getName());
+
+        //Create the fragment we are going to navigate to
+        ContactFragment fragment = new ContactFragment();
+        //We need to create Bundle cause we need to pass the contact somehow
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.contact), contact);
+        fragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(getString(R.string.contact_fragment));
+        transaction.commit();
+
+
+
+    }
 
     //onCreate Method is called very first in the Activity Lifecycle when the Activity is first created. Then it inflated the layout
     @Override
@@ -33,15 +54,11 @@ public class MainActivity extends AppCompatActivity {
      */
 
     /**
-     *
      * initialize the first Fragment (ViewContactsFragment)
-     *
-     *
-     *
      */
 
     //init method to initialize
-    private void init(){
+    private void init() {
         ViewContactsFragment fragment = new ViewContactsFragment();
         //we create FragmentTransaction object (transaction)
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -54,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
 
 
-
-
     }
+
     //ImageLoader has to be initialised atleast once and as our MainActivity hosts all our fragments. We do it here
-    private void initImageLoader(){
+    private void initImageLoader() {
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(MainActivity.this);
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
