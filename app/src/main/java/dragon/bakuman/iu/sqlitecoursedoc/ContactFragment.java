@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
 
 public class ContactFragment extends Fragment {
@@ -29,6 +31,9 @@ public class ContactFragment extends Fragment {
         setArguments(new Bundle());
     }
 
+    private TextView mContactName;
+    private CircleImageView mContactImage;
+
 
     private Toolbar toolbar;
     private Contact mContact;
@@ -38,19 +43,21 @@ public class ContactFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         toolbar = view.findViewById(R.id.contactToolbar);
+        mContactName = view.findViewById(R.id.contactName);
+        mContactImage = view.findViewById(R.id.contactImage);
+
         Log.d(TAG, "onCreateView: started.");
 
         //as soon as it start, this will retrieve the contact
         mContact = getContactFromBundle();
 
-        if (mContact != null){
 
-            Log.d(TAG, "onCreateView: received contact: " + mContact.getName());
-        }
 
         //required up setting up the toolbar
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+
+        init();
 
 
         //navigation for the backarrow
@@ -77,6 +84,13 @@ public class ContactFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void init(){
+
+        mContactName.setText(mContact.getName());
+        UniversalImageLoader.setImage(mContact.getProfileImage(), mContactImage, null, "http://");
+
     }
 
     @Override

@@ -37,13 +37,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/contactImage"
                 android:layout_marginStart="30dp"
-                android:id="@+id/tvName"
+                android:id="@+id/contactName"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="30dp"
                 android:textSize="30sp" />
 
             <ListView
-                android:layout_below="@+id/tvName"
+                android:layout_below="@+id/contactName"
                 android:id="@+id/lvContactProperties"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
