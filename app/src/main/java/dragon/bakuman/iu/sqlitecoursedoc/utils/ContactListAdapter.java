@@ -23,7 +23,7 @@ import dragon.bakuman.iu.sqlitecoursedoc.R;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
 
 //ArrayAdapter is of Contact type
-public class CustomListAdapter extends ArrayAdapter<Contact> {
+public class ContactListAdapter extends ArrayAdapter<Contact> {
 
     //LayoutInflater class is used to instantiate layout XML file into its corresponding View objects.
     //In other words, it takes as input an XML file and builds the View objects from it.
@@ -35,7 +35,7 @@ public class CustomListAdapter extends ArrayAdapter<Contact> {
     private Context mContext;
     private String mAppend;
 
-    public CustomListAdapter(@NonNull Context context, int resource, @NonNull List<Contact> contacts, String append) {
+    public ContactListAdapter(@NonNull Context context, int resource, @NonNull List<Contact> contacts, String append) {
         super(context, resource, contacts);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutResource = resource;

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
-import dragon.bakuman.iu.sqlitecoursedoc.utils.CustomListAdapter;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.ContactListAdapter;
 
 //Holds the code for the fragment
 //this will display all the contacts in the contacts database
@@ -50,7 +49,7 @@ public class ViewContactsFragment extends Fragment {
     //create widgets. Defined in respective snippets.
     private AppBarLayout viewContactsBar, searchBar;
 
-    private CustomListAdapter adapter; //Global one.
+    private ContactListAdapter adapter; //Global one.
     private ListView contactsList; //Create ListView alsp
 
 
@@ -147,7 +146,7 @@ public class ViewContactsFragment extends Fragment {
         contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
         contacts.add(new Contact("G_DRAGON", "44777744470", "Mobile", "gd@gmail.com", testImageUrl));
         // If in a Fragment to get a context, we do getActivity()
-        adapter = new CustomListAdapter(getActivity(), R.layout.layout_contactlistitems, contacts, "https://");
+        adapter = new ContactListAdapter(getActivity(), R.layout.layout_contactlistitems, contacts, "https://");
         contactsList.setAdapter(adapter);
 
         contactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

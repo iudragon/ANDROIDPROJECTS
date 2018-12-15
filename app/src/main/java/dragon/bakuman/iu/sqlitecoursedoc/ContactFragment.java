@@ -14,10 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.ContactPropertyListAdapter;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
 
@@ -37,6 +41,7 @@ public class ContactFragment extends Fragment {
 
     private Toolbar toolbar;
     private Contact mContact;
+    private ListView mListView;
 
     @Nullable
     @Override
@@ -45,7 +50,7 @@ public class ContactFragment extends Fragment {
         toolbar = view.findViewById(R.id.contactToolbar);
         mContactName = view.findViewById(R.id.contactName);
         mContactImage = view.findViewById(R.id.contactImage);
-
+        mListView = view.findViewById(R.id.lvContactProperties);
         Log.d(TAG, "onCreateView: started.");
 
         //as soon as it start, this will retrieve the contact
@@ -91,6 +96,13 @@ public class ContactFragment extends Fragment {
         mContactName.setText(mContact.getName());
         UniversalImageLoader.setImage(mContact.getProfileImage(), mContactImage, null, "http://");
 
+
+        ArrayList<String> properties = new ArrayList<>();
+        properties.add(mContact.getPhoneNumber());
+        properties.add(mContact.getEmail());
+        ContactPropertyListAdapter adapter = new ContactPropertyListAdapter(getActivity(), R.layout.layout_cardview, properties);
+        mListView.setAdapter(adapter);
+        mListView.setDivider(null);
     }
 
     @Override
