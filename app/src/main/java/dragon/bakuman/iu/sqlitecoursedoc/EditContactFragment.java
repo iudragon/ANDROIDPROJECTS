@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.ChangePhotoDialog;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.Init;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
 public class EditContactFragment extends Fragment {
@@ -94,10 +95,35 @@ public class EditContactFragment extends Fragment {
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: opening the image selection dialog box");
-                //we wanna initiate the dialog to popup when we click the camera icon
-                ChangePhotoDialog dialog = new ChangePhotoDialog();
-                dialog.show(getFragmentManager(), getString(R.string.change_photo_dialog));
+
+
+                /*
+                Make sure all permissions have been verified before opening the dialog
+
+
+                 */
+
+                //We do (MainActivity) because all those permissions verifying methods are inside MainActivity
+                for (int i = 0; i < Init.PERMISSIONS.length; i++) {
+                    String[] permission = {Init.PERMISSIONS[i]};
+                    if (((MainActivity) getActivity()).checkPermission(permission)) {
+
+                        if (i == Init.PERMISSIONS.length - 1){
+
+                            Log.d(TAG, "onClick: opening the image selection dialog box");
+                            //we wanna initiate the dialog to popup when we click the camera icon
+                            ChangePhotoDialog dialog = new ChangePhotoDialog();
+                            dialog.show(getFragmentManager(), getString(R.string.change_photo_dialog));                        }
+
+                    } else {
+
+                        ((MainActivity)getActivity()).verifyPermissions(permission);
+                    }
+
+
+                }
+
+
             }
         });
 
