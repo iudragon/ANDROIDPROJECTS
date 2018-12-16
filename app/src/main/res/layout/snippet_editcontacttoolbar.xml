@@ -17,7 +17,7 @@
 
         <!-- id to toolBar because we are going to attach menu to it -->
         <android.support.v7.widget.Toolbar
-            android:id="@+id/contactToolbar"
+            android:id="@+id/editcontactToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
