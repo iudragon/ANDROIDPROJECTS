@@ -20,6 +20,7 @@ import android.widget.Spinner;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
+import dragon.bakuman.iu.sqlitecoursedoc.utils.ChangePhotoDialog;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
 public class EditContactFragment extends Fragment {
@@ -94,7 +95,9 @@ public class EditContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: opening the image selection dialog box");
-
+                //we wanna initiate the dialog to popup when we click the camera icon
+                ChangePhotoDialog dialog = new ChangePhotoDialog();
+                dialog.show(getFragmentManager(), getString(R.string.change_photo_dialog));
             }
         });
 
