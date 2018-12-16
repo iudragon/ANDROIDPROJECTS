@@ -88,6 +88,20 @@ public class ContactPropertyListAdapter extends ArrayAdapter<String> {
         if (property.contains("@")) {
 
             holder.leftIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_email", null, mContext.getPackageName()));
+
+            holder.leftIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: opening email.");
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {property});
+                    mContext.startActivity(emailIntent);
+
+                }
+            });
+
+
         } else if (property.length() != 0) {
 
             holder.leftIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_phone", null, mContext.getPackageName()));
@@ -112,6 +126,16 @@ public class ContactPropertyListAdapter extends ArrayAdapter<String> {
 
 
             holder.rightIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_chat", null, mContext.getPackageName()));
+
+            holder.rightIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: iniitiating text message");
+                    //the number that we want to sent sms
+                    Intent smsIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", property, null));
+                    mContext.startActivity(smsIntent);
+                }
+            });
 
         }
 
