@@ -1,5 +1,6 @@
 package dragon.bakuman.iu.sqlitecoursedoc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,8 +30,17 @@ public class ContactFragment extends Fragment {
 
     private static final String TAG = "ContactFragment";
 
+    public interface OnEditContactListener {
+
+        void OnEditContactSelected(Contact contact);
+
+    }
+
+    OnEditContactListener mOnEditContactListener;
+
+
     //this will evade the nullpointerexception when adding to a new bundle from MainActivity
-    public ContactFragment(){
+    public ContactFragment() {
         super();
         setArguments(new Bundle());
     }
@@ -57,9 +67,8 @@ public class ContactFragment extends Fragment {
         mContact = getContactFromBundle();
 
 
-
         //required up setting up the toolbar
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
         init();
@@ -84,6 +93,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: click edit inon ");
+                mOnEditContactListener.OnEditContactSelected(mContact);
 
             }
         });
@@ -91,7 +101,7 @@ public class ContactFragment extends Fragment {
         return view;
     }
 
-    private void init(){
+    private void init() {
 
         mContactName.setText(mContact.getName());
         UniversalImageLoader.setImage(mContact.getProfileImage(), mContactImage, null, "http://");
@@ -114,7 +124,7 @@ public class ContactFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.menuitem_delete:
                 Log.d(TAG, "onOptionsItemSelected: deleting contact.");
@@ -124,19 +134,38 @@ public class ContactFragment extends Fragment {
     }
 
 
+    /**
+     *
+     * Retrieves the selected contact from the bundle coming form MainActivity
+     *
+     * @return
+     */
 
     //to retrieve the information
-    private Contact getContactFromBundle(){
+    private Contact getContactFromBundle() {
 
         Log.d(TAG, "getContactFromBundle: arguments: " + getArguments());
         Bundle bundle = this.getArguments();
         //this will receive the incoming bundle when we navigate to the contactfragment
-        if (bundle != null){
+        if (bundle != null) {
             return bundle.getParcelable(getString(R.string.contact));
 
         } else {
 
             return null;
+        }
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnEditContactListener = (OnEditContactListener) getActivity();
+        }catch (ClassCastException e){
+
+            Log.d(TAG, "onAttach: classcastexception: " + e.getMessage());
+
         }
     }
 }
