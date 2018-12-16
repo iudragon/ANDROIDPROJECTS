@@ -67,7 +67,7 @@ public class ContactFragment extends Fragment {
         mContact = getContactFromBundle();
 
 
-        //required up setting up the toolbar
+        //required for setting up the toolbar
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
