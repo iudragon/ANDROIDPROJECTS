@@ -1,9 +1,12 @@
 package dragon.bakuman.iu.sqlitecoursedoc.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dragon.bakuman.iu.sqlitecoursedoc.MainActivity;
 import dragon.bakuman.iu.sqlitecoursedoc.R;
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
 
 public class ContactPropertyListAdapter extends ArrayAdapter<String> {
+
+    private static final String TAG = "ContactPropertyListAdap";
 
     //LayoutInflater class is used to instantiate layout XML file into its corresponding View objects.
     //In other words, it takes as input an XML file and builds the View objects from it.
@@ -39,8 +45,6 @@ public class ContactPropertyListAdapter extends ArrayAdapter<String> {
         layoutResource = resource;
         this.mContext = context;
         this.mProperties = properties;
-
-
 
 
     }
@@ -81,14 +85,32 @@ public class ContactPropertyListAdapter extends ArrayAdapter<String> {
 
         //check if itsan email or a phone number
         //email
-        if (property.contains("@")){
+        if (property.contains("@")) {
 
             holder.leftIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_email", null, mContext.getPackageName()));
-        }
-
-        else if (property.length() != 0){
+        } else if (property.length() != 0) {
 
             holder.leftIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_phone", null, mContext.getPackageName()));
+
+            holder.leftIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //this Init.PHONE_PERMISSIONS gonna pass that array in checkPermission list
+                    if (((MainActivity) mContext).checkPermission(Init.PHONE_PERMISSIONS)) {
+                        Log.d(TAG, "onClick: initiating phone call");
+
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", property, null));
+                        mContext.startActivity(callIntent);
+                    } else {
+
+                        ((MainActivity) mContext).verifyPermissions(Init.PHONE_PERMISSIONS);
+                    }
+
+
+                }
+            });
+
+
             holder.rightIcon.setImageResource(mContext.getResources().getIdentifier("@drawable/ic_chat", null, mContext.getPackageName()));
 
         }
