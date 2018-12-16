@@ -1,5 +1,6 @@
 package dragon.bakuman.iu.sqlitecoursedoc;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +25,7 @@ import dragon.bakuman.iu.sqlitecoursedoc.utils.ChangePhotoDialog;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.Init;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
 
-public class EditContactFragment extends Fragment {
+public class EditContactFragment extends Fragment implements ChangePhotoDialog.OnPhotoReceivedListener {
 
     private static final String TAG = "EditContactFragment";
 
@@ -108,12 +109,16 @@ public class EditContactFragment extends Fragment {
                     String[] permission = {Init.PERMISSIONS[i]};
                     if (((MainActivity) getActivity()).checkPermission(permission)) {
 
-                        if (i == Init.PERMISSIONS.length - 1){
+                        if (i == Init.PERMISSIONS.length - 1) {
 
                             Log.d(TAG, "onClick: opening the image selection dialog box");
                             //we wanna initiate the dialog to popup when we click the camera icon
                             ChangePhotoDialog dialog = new ChangePhotoDialog();
-                            dialog.show(getFragmentManager(), getString(R.string.change_photo_dialog));                        }
+                            dialog.show(getFragmentManager(), getString(R.string.change_photo_dialog));
+
+                            dialog.setTargetFragment(EditContactFragment.this, 0);
+
+                        }
 
                     } else {
 
@@ -152,20 +157,7 @@ public class EditContactFragment extends Fragment {
      * @return
      */
 
-    //to retrieve the information
-    private Contact getContactFromBundle() {
 
-        Log.d(TAG, "getContactFromBundle: arguments: " + getArguments());
-        Bundle bundle = this.getArguments();
-        //this will receive the incoming bundle when we navigate to the contactfragment
-        if (bundle != null) {
-            return bundle.getParcelable(getString(R.string.contact));
-
-        } else {
-
-            return null;
-        }
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -183,5 +175,54 @@ public class EditContactFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //to retrieve the information
+    private Contact getContactFromBundle() {
+
+        Log.d(TAG, "getContactFromBundle: arguments: " + getArguments());
+        Bundle bundle = this.getArguments();
+        //this will receive the incoming bundle when we navigate to the contactfragment
+        if (bundle != null) {
+            return bundle.getParcelable(getString(R.string.contact));
+
+        } else {
+
+            return null;
+        }
+    }
+
+    /**
+     *retrieves the selected image from the bundle coming from ChangePhotoDialog
+     *
+     *
+     * @param bitmap
+     */
+
+    @Override
+    public void getBitmapImage(Bitmap bitmap) {
+
+        Log.d(TAG, "getBitmapImage: got the bitmap: " + bitmap);
+
+        //get the bitmap from change photo dialog
+
+        if (bitmap != null){
+
+            //compress the image if you like
+
+            ((MainActivity)getActivity()).compressBitmap(bitmap, 70);
+
+            mContactImage.setImageBitmap(bitmap);
+
+
+
+
+
+
+        }
+
+
+
+
     }
 }

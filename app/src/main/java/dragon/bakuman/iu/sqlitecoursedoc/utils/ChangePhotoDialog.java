@@ -1,6 +1,11 @@
 package dragon.bakuman.iu.sqlitecoursedoc.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +21,15 @@ public class ChangePhotoDialog extends DialogFragment {
 
     private static final String TAG = "ChangePhotoDialog";
 
+    public interface OnPhotoReceivedListener{
+
+        void getBitmapImage(Bitmap bitmap);
+    }
+
+
+    OnPhotoReceivedListener mOnPhotoReceived;
+
+
 
     @Nullable
     @Override
@@ -30,6 +44,8 @@ public class ChangePhotoDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: starting camera.");
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, Init.CAMERA_REQUEST_CODE);
 
             }
         });
@@ -58,5 +74,54 @@ public class ChangePhotoDialog extends DialogFragment {
 
 
         return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+
+        mOnPhotoReceived = (OnPhotoReceivedListener) getTargetFragment();
+        }catch (ClassCastException e){
+            Log.d(TAG, "onAttach: ClassCAstException: " + e.getMessage());
+            
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /*
+
+        Results when taking a new Image with camera
+         */
+
+        if (requestCode == Init.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+
+            Log.d(TAG, "onActivityResult: done taking picture");
+
+            //get the new image bitmap
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            Log.d(TAG, "onActivityResult: received bitmap: " + bitmap);
+
+        //send the bitmap and fragment to the interface
+
+            mOnPhotoReceived.getBitmapImage(bitmap);
+            getDialog().dismiss();
+
+
+
+
+
+
+
+
+
+
+
+        }
+
     }
 }

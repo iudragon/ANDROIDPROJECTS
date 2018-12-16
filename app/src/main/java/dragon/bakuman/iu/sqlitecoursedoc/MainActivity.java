@@ -1,15 +1,17 @@
 package dragon.bakuman.iu.sqlitecoursedoc;
 
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.io.ByteArrayOutputStream;
 
 import dragon.bakuman.iu.sqlitecoursedoc.models.Contact;
 import dragon.bakuman.iu.sqlitecoursedoc.utils.UniversalImageLoader;
@@ -102,6 +104,26 @@ public class MainActivity extends AppCompatActivity implements
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(MainActivity.this);
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
+
+
+    /**
+     *Compress the bitmap by the @param "quality"
+     * Quality can be anywhere from one to hundred. Hundred being the highest quality
+     *
+     * @param bitmap
+     * @param quality
+     * @return
+     */
+
+    public Bitmap compressBitmap(Bitmap bitmap, int quality){
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+         return bitmap;
+    }
+
+
+
 
 
     //Generalized methods to explicitly ask for permissions. Can pass any array of permissions
